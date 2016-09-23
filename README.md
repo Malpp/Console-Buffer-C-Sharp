@@ -2,7 +2,7 @@
 
 add ConsoleBuffer.dll to references
 
-using ConsoleBuffer;
+using ConsoleBufferNP;
 
 ConsoleBuffer.StartBuffer();
 
