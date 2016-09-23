@@ -32,10 +32,6 @@ namespace ConsoleBufferNP
 
 		static bool running = true;
 
-		static string line;
-
-		public static int count;
-
 		#region Management
 
 		static void AddToBuffer(int left, int top, string word)
@@ -48,7 +44,7 @@ namespace ConsoleBufferNP
 
 		}
 
-		static void ReadKeys(int left, int top)
+		static string ReadKeys(int left, int top)
 		{
 
             while (Console.KeyAvailable)
@@ -58,7 +54,7 @@ namespace ConsoleBufferNP
 
             }
 
-			line = "";
+			string line = "";
 
 			while (true)
 			{
@@ -88,6 +84,7 @@ namespace ConsoleBufferNP
 
 			}
 
+			return line;
 
 		}
 
@@ -100,8 +97,6 @@ namespace ConsoleBufferNP
 
 				if (buffer.Count() != 0)
 				{
-
-					count = buffer.Count;
 
 					try
 					{
@@ -136,13 +131,39 @@ namespace ConsoleBufferNP
 		public static string ReadLine(int left, int top)
 		{
 
-			Thread readKeys = new Thread(() => ReadKeys(left, top));
+			return ReadKeys(left, top);
 
-			readKeys.Start();
+		}
 
-			readKeys.Join();
+		public static char ReadKey(int left, int top)
+		{
 
-			return line;
+			while (Console.KeyAvailable)
+			{
+
+				Console.ReadKey(true);
+
+			}
+
+			char keyPressed = Console.ReadKey(true).KeyChar;
+
+			AddToBuffer(left, top, keyPressed.ToString());
+
+			return keyPressed;
+
+		}
+
+		public static char ReadKey()
+		{
+
+			while (Console.KeyAvailable)
+			{
+
+				Console.ReadKey(true);
+
+			}
+
+			return Console.ReadKey(true).KeyChar;
 
 		}
 
