@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,12 +14,14 @@ namespace ConsoleBufferNP
 		public int Left { get; private set; }
 		public int Top { get; private set; }
 		public string Word { get; private set; }
+		public ConsoleColor Color { get; private set; }
 
-		public BufferElement(int left, int top, string word)
+		public BufferElement(int left, int top, string word, ConsoleColor color = ConsoleColor.Gray)
 		{
 			Left = left;
 			Top = top;
 			Word = word;
+			Color = color;
 		}
 
 	}
@@ -34,17 +37,17 @@ namespace ConsoleBufferNP
 
 		#region Management
 
-		static void AddToBuffer(int left, int top, string word)
+		static void AddToBuffer(int left, int top, string word, ConsoleColor color)
 		{
 			try
 			{
-				buffer.Add(new BufferElement(left, top, word));
+				buffer.Add(new BufferElement(left, top, word, color));
 			}
 			catch { }
 
 		}
 
-		static string ReadKeys(int left, int top)
+		static string ReadKeys(int left, int top, ConsoleColor color = ConsoleColor.Gray)
 		{
 
             while (Console.KeyAvailable)
@@ -70,7 +73,7 @@ namespace ConsoleBufferNP
                 {
 
 					line = line.Remove(line.Length - 1);
-					AddToBuffer(left, top, line+" ");
+					AddToBuffer(left, top, line+" ", color);
 
 
 				}
@@ -78,7 +81,7 @@ namespace ConsoleBufferNP
 				{
 
 					line += keyPressed;
-					AddToBuffer(left, top, line);
+					AddToBuffer(left, top, line, color);
 
 				}
 
@@ -102,6 +105,7 @@ namespace ConsoleBufferNP
 					{
 
 						Console.SetCursorPosition(buffer[0].Left, buffer[0].Top);
+						Console.ForegroundColor = buffer[0].Color;
 						Console.Write(buffer[0].Word);
 
 						buffer.RemoveAt(0);
@@ -128,14 +132,14 @@ namespace ConsoleBufferNP
 
 		#region public functions
 
-		public static string ReadLine(int left, int top)
+		public static string ReadLine(int left, int top, ConsoleColor color = ConsoleColor.Gray)
 		{
 
-			return ReadKeys(left, top);
+			return ReadKeys(left, top, color);
 
 		}
 
-		public static char ReadKey(int left, int top)
+		public static char ReadKey(int left, int top, ConsoleColor color = ConsoleColor.Gray)
 		{
 
 			while (Console.KeyAvailable)
@@ -147,7 +151,7 @@ namespace ConsoleBufferNP
 
 			char keyPressed = Console.ReadKey(true).KeyChar;
 
-			AddToBuffer(left, top, keyPressed.ToString());
+			AddToBuffer(left, top, keyPressed.ToString(), color);
 
 			return keyPressed;
 
@@ -185,10 +189,11 @@ namespace ConsoleBufferNP
 
 		}
 
-		public static void Write(int left, int top, string word)
+		public static void Write(int left, int top, string word, ConsoleColor color = ConsoleColor.Gray)
 		{
 
-			AddToBuffer(left, top, word);
+			AddToBuffer(left, top, word, color);
+
 
 		}
 
