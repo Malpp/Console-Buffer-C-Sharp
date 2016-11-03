@@ -197,6 +197,15 @@ namespace ConsoleBufferNP
 
 		}
 
+		public static void ClearBuffer()
+		{
+
+			buffer.Clear();
+
+			Thread.Sleep(1);
+
+		}
+
 		#endregion
 
 	}
